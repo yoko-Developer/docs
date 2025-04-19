@@ -1,0 +1,193 @@
+1. AIRead
+  (1) AIReadをインストール
+      インストール先： C:\AIRead
+
+  (2) モデルを配置
+      配置先： C:\AIRead\tessdata
+      - 1.AIRead\multi2_jpn_v1.6.zip
+      - 1.AIRead\text_detection_v3.zip
+
+  (3) AIRead にライセンスを登録
+
+  (4) 定義類を配布
+     「1.AIRead\AIRead_20250325.zip」を解凍し、「AIRead_20250325\AIRead」を「C:\AIRead」に上書きコピー
+
+2. ETL
+  (1) ETLをインストール
+      インストール先： C:\UNIRITA\Waha!Transformer\V53
+      リポジトリ ： C:\UNIRITA\Waha!Transformer\Repository
+
+      - Web Serverサービス登録の選択
+        登録不要
+      - ジョブスケジュール管理オプション
+        インストールする
+      - アプリケーション同時起動最大数の設定
+        20 ⇒ 40
+
+  (2) OSユーザの情報登録
+     「2.ETL\ETLoptionUsermasterPC1.csv」にOSのログイン情報を記載
+
+       指定例) WIN,USER01,,kanjou(※OSユーザ名),scocr01(※OSパスワード)
+       OSユーザ名とOSパスワードを修正する。
+
+     コマンドプロンプトを起動して下記例のようにコマンドを実行してOSユーザの情報を登録
+       > C:\UNIRITA\Waha!Transformer\AATrigger\AUW\BIN\mkusrdef.exe -iC:\Users\kanjou\Downloads\ETLoptionUsermasterPC1.csv
+         2024/03/19 10:33:48 MKUSRDEF MKU001I MKUSRDEF START
+         2024/03/19 10:33:48 MKUSRDEF MKU002I RESULT: TOTAL(1) OK(1) NG(0)
+         2024/03/19 10:33:48 MKUSRDEF MKU003I MKUSRDEF END RC = 0
+
+  (3) ジョブをインポート
+     「2.ETL\ETLJobs_20250325.zip」を解凍。
+     「ETLJobs_20250325\JobImport.bat」を実行し、ジョブをインポート。
+
+
+3.Java
+  「デモ環境セットアップ手順書.pptx」の「1. Javaのインストール」を行う
+
+
+4.Wagby
+  Wagbyのインストールは不要。
+  実施する場合は「デモ環境セットアップ手順書.pptx」の「2. Wagbyのインストール」
+  ※別途ライセンスが必要
+
+
+5.PostgreSQL
+  「デモ環境セットアップ手順書.pptx」の「3. PostgreSQLのインストールと設定」を行う
+     パスワードは「postgres」を想定。
+     パスワードを変更する場合「付録1 DBのパスワードの設定箇所一覧」を変更する必要あり。
+
+   レーベンシュタインを有効化するため、PgAdminで以下のSQLを実行
+     CREATE EXTENSION fuzzystrmatch;
+
+  「5.PostgreSQL\edb_psqlodbc.exe」を実行してODBCドライバをインストール
+  「5.PostgreSQL\ODBC設定.xlsx」を行い、ODBCを設定
+
+
+6.WagbyApp
+  「C:\Wagby\Wagby-9.3.0」フォルダを作成。
+  「デモ環境セットアップ手順書.pptx」の「4. Wagbyアプリケーションのデプロイ」を行う。
+
+  「C:\Wagby\Wagby-9.3.0\wagbyapp\bin\install_service.bat」を実行して、Windows サービスにApache Tomcatを登録。
+  Windows の「サービス」を起動し、「Apache Tomcat 9.0 Tomcat9」をダブルクリックして開き、スタートアップの種類を「自動(遅延開始)」に変更して「OK」で保存
+
+
+7. JavaApp
+  「7. JavaApp\JavaApp_20250325.zip」を解凍し、「JavaApp_20250325」配下のフォルダを「C:\」配下に上書きコピー
+
+
+8. 住所正規化コンバータ(R7.1.20)
+  「8. 住所正規化コンバータ\Anorm_R7_Installer.exe」を実行し、「C:\AIRead_TDBCD\AnormR7」に住所正規化コンバータをインストール
+
+  「8. 住所正規化コンバータ\jmaster.zip」を解凍し、「C:\AIRead_TDBCD\AnormR7」配下にjmasterフォルダをコピー
+
+  「8. 住所正規化コンバータ\properties.zip」を解凍し、「C:\AIRead_TDBCD\AnormR7」配下にpropertiesフォルダをコピー
+
+   住所正規化コンバータのライセンスを「C:\AIRead_TDBCD\AnormR7」配下に「license.key」というファイル名でコピー
+
+
+9.Table&View
+  「デモ環境セットアップ手順書.pptx」の「5. テーブルとビューの作成」を行う。
+
+  その他、「9.Table&View\テーブル」「9.Table&View\インデックス」もPgAdminで実行して作成。
+
+
+10.data
+  「C:\Wagby\Wagby-9.3.0\export」フォルダを作成。
+  「10.data\data_20241009104207.zip」を「C:\Wagby\Wagby-9.3.0\export」配下にコピー。
+
+  「デモ環境セットアップ手順書.pptx」の「6. テストデータの配置」を行う。
+
+   Wagby Appの画面をブラウザから開き、「マスタメンテ」-「金融機関補正マスタ」-「金融機関補正マスタの一覧表示」をクリックして「金融機関補正マスタ 検索」画面を表示。
+   デフォルトで、一覧の表見出しのチェックボックスがチェックされていることを確認し、「一括削除」を実行。
+   金融機関補正マスタが0件になったことを確認。
+
+   「マスタメンテ」-「金融機関補正マスタ」-「金融機関補正マスタ アップロード更新」をクリックして「金融機関補正マスタ アップロード更新」画面を表示。
+   「ファイルを選択」で「10.data\金融機関補正マスタ.csv」を選択し、「更新用ファイルを送信」をクリック。
+    1208件が登録成功になることを確認。
+
+   「10.data\20250325_TDB入力データサンプル.zip」を解凍し、以下のファイルを「C:\AIRead_DB\Master\input」配下にコピー。
+      tdbcd_relation_all.csv
+      tdbcd_relation_supplier_0.csv
+      tdbcd_relation_supplier_1.csv
+      ※ファイル内のコードはダミーの値
+
+
+11_タスクスケジューラ
+   Windowsのタスクスケジューラを起動
+
+   「11_タスクスケジューラ」配下のXMLファイルの数だけ、下記作業を繰返し実施。
+
+   左側ツリービューの「タスク スケジューラ ライブラリ」を選択して右クリックし、「タスクのインポート」をクリック。
+   ファイル選択ダイアログで、「11_タスクスケジューラ」配下のXMLファイルを選択して「開く」をクリック。
+   「タスクの作成」ダイアログの「全般」タブで以下を変更／確認する。
+       タスクの実行時に使うユーザーアカウント： OSのユーザー名 
+           ※変更する場合、「ユーザーまたはグループの変更」で「選択するオブジェクト名を入力してください」にOSのユーザー名を入力し、「名前の確認」をクリック後、「OK」で保存
+
+
+
+付録1 DBのパスワードの設定箇所一覧
+
+1. ファイル
+
+C:\AIRead_ETL\conf\MainTrigger.ini
+C:\AIRead_ETL\conf\MainTrigger_TKC.ini
+C:\AIRead_ETL\conf\OcrRequestReceiver.ini
+C:\AIRead_ETL\conf\OcrRequestReceiver_ReOCR.ini
+C:\AIRead_ETL\conf\OcrRequestReceiver_TKC.ini
+C:\AIRead_ETL\conf\OcrRequestReceiver_TKC_ReOCR.ini
+⇒
+DB_PASSWORD=
+
+C:\Wagby\Wagby-9.3.0\wagbyapp\conf\catalina.properties
+⇒
+WAGBY_DATASOURCE_PASSWORD=
+
+2. ODBCデータソース
+PostgreSQL35W_kanjou_ph3
+
+
+
+付録2 タスクスケジューラの構成
+
+優先度：通常／至急のOCRプロセス
+  OcrRequestReceiver_01_OCR.xml
+
+優先度：至急専用のOCRプロセス
+  OcrRequestReceiver_09_OCR_shikyuu.xml
+
+OCRの再読取りプロセス
+  OcrRequestReceiver_21_OCR_re.xml
+
+優先度：通常／至急のTKC/MSプロセス
+  OcrRequestReceiver_10_TKC.xml
+
+優先度：至急専用のTKC/MSプロセス
+  OcrRequestReceiver_19_TKC_shikyuu.xml
+
+TKC/MSの再読取りプロセス
+  OcrRequestReceiver_25_TKC_re.xml
+
+TDBCD紐付けサービス起動
+  StartTDBCD.xml
+
+TDBマスタデータインポート
+  Import_tdbcd_relation.xml
+
+メンテナンスプロセス
+  cleanAIReadETL.xml
+  cleanETLoptionTemp.xml
+  rotateETLoptionLog.xml
+
+
+付録3 AIReadが使用するCPUコア数の変更
+
+AIReadで3コアを使用するよう変更。
+
+「C:\AIRead\bat」配下の以下のファイルに設定あり。
+・1_run_CHUKIN_TKC_kw.bat
+・1_run_CHUKIN_TKC_kw_reocr.bat
+・1_run_kw.bat
+・1_run_kw_reocr.bat
+⇒
+set CPUCORE=0x7(2進数：0111)
+Windowsの電卓をプログラマーモードに変更し、2進数で使用するコアの数だけ"1"のフラグを立てて16進数に変換した値を設定する
